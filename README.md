@@ -30,6 +30,12 @@ Technical implementation ideas:
   * User Interface: Design and implement the user interface, including displaying grid maps, scores, available control buttons, etc.
   * Overall, the game design challenge was to effectively integrate the concepts of path-finding algorithms into gameplay and demonstrate how these algorithms perform in real-world applications through player-agent interaction. At the same time, using C language and OpenGL to implement such a game can not only exercise programming skills, but also provide an in-depth understanding of computer graphics and algorithm knowledge.
 
+Environment installation instruction:
+GLUT for UI: brew install freeglut
+OpenGL for graph: build-in on mac
+Compiler: Xcode: xcode-select --install
+
+
 Goal:
 We use this project to horn our programming skills for game development. It is very challenging for us. We just wanna complete this, which is already too much.
 
