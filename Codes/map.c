@@ -38,4 +38,5 @@ void printMap(Map_t* map) {
         }
         printf("\n");
     }
+    return;
 }
