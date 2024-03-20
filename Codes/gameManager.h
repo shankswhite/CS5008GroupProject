@@ -10,12 +10,15 @@
 #include <OpenGL/gl.h>
 
 
-#define WINDOW_WIDTH 800
+#define WINDOW_WIDTH 1000
 #define WINDOW_HEIGHT 800
+#define MAP_WIDTH 800
+#define MAP_HEIGHT 800
 
 
 
 void displayMap();
+Map_t* getMap();
 int display(int argc, char** argv);
 
 
