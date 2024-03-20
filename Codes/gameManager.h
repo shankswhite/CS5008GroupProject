@@ -15,11 +15,14 @@
 #define MAP_WIDTH 800
 #define MAP_HEIGHT 800
 
+extern Map_t* mainMap;
+
 
 
 void displayMap();
 Map_t* getMap();
-int display(int argc, char** argv);
+void display();
+void initWindow();
 
 
 #endif

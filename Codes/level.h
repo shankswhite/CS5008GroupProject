@@ -4,6 +4,7 @@
 #include "map.h"
 
 Map_t createLevel1();
+Map_t createLevel2();
 
 
 #endif

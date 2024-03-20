@@ -1,4 +1,4 @@
-// gcc -fdiagnostics-color=always -g map.c level.c gameManager.c main.c -o mainProgram -framework OpenGL -framework GLUT -Wno-deprecated-declarations
+// gcc -fdiagnostics-color=always -g map.c level.c drawGraph.c gameManager.c main.c -o mainProgram -framework OpenGL -framework GLUT -Wno-deprecated-declarations
 
 #include "map.h"
 #include "agent.h"
@@ -7,12 +7,30 @@
 #include "level.h"
 #include "gameManager.h"
 
+#include <stdio.h>
+#include <GLUT/glut.h>
+#include <OpenGL/gl.h>
+
 
 int main(int argc, char** argv) {
-    // initial game struct
+    mainMap = getMap();
+    
 
-    // initial game logic
-    display(argc, argv);
-    // game loop
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+    glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+    glutInitWindowPosition(100, 100);
+    glutCreateWindow("Tile Conqueror");
+
+    glutDisplayFunc(display);
+
+    initWindow();
+
+    glutMainLoop();
+    if (mainMap) {
+        freeMap(mainMap);
+        mainMap = NULL;
+    }
+
     return 0;
 }
