@@ -1,7 +1,7 @@
 #include "map.h"
 #include "level.h"
 #include "gameManager.h"
-
+#include "drawGrid.h"
 
 #include <stdio.h>
 #include <GLUT/glut.h>
@@ -30,9 +30,10 @@ void displayMap() {
 
     glClear(GL_COLOR_BUFFER_BIT); // 清除颜色缓冲区
     glLoadIdentity(); // 重置当前指定的矩阵为单位矩阵
+    // drawGrid();
 
     // 假设每个tile的大小
-    float tileSize = WINDOW_WIDTH / 20.0;
+    float tileSize = MAP_WIDTH / 20.0;
 
     // 遍历你的地图数据并绘制每个tile
     for (int i = 0; i < 20; i++) {
@@ -53,6 +54,14 @@ void displayMap() {
         }
     }
 
+    glBegin(GL_QUADS);
+        glVertex2f(800, 900);
+        glVertex2f(900, 900);
+        glVertex2f(900, 700);
+        glVertex2f(800, 700);
+    glEnd();
+
+
     glFlush(); // 确保之前的所有OpenGL命令已经执行完毕
 }
 
@@ -60,6 +69,7 @@ void displayMap() {
 
 int display(int argc, char** argv) {
     mainMap = getMap();
+    
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
@@ -67,10 +77,10 @@ int display(int argc, char** argv) {
     glutInitWindowPosition(100, 100);
     glutCreateWindow("Map");
 
-    initOpenGL();
-
     // 设置绘制回调函数
     glutDisplayFunc(displayMap);
+
+    initOpenGL();
 
     // 进入GLUT事件处理循环
     glutMainLoop();
