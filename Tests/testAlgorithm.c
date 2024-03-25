@@ -10,6 +10,7 @@
 #include "../Codes/level.h"
 #include "../Codes/agent.h"
 #include "../Codes/gameLogic.h"
+// #include "../Codes/dfs.c"
 // Note that we are locating this file
 // within the same directory, so we use quotations
 // and provide the path to this file which is within
@@ -32,10 +33,27 @@ int unitTest1(int status) {
 
     printMap(testMap);
     printf("\n");
+
+    int start_x = 0;
+    int start_y = 1;
+    int dest_x = 19;
+    int dest_y = 19;
+
+    Stack stack;
+    initialize(&stack);
+    push(&stack, (Coordinates){start_x, start_y});
+
+    Coordinates nextStep = {start_x, start_y};
+    printf("Start: (%d, %d)\n", nextStep.x, nextStep.y);
+
+    while (!(nextStep.x == dest_x && nextStep.y == dest_y)) {
+        nextStep = dfsTest3(testMap, &stack, dest_x, dest_y);
+        printf("Next step: (%d, %d)\n", nextStep.x, nextStep.y);
+    }
     // for (int j = 0; j < MAP_SIZE; j++) {
     //     printf("(%d, %d)", path[j][0], path[j][1]);
     // }
-    printf("\n");
+    // printf("\n");
     
     // printf("%d \n", findPath(9, 19, 19, 19, testMap, ));
     // for (int i = 0; i < MAP_SIZE; i++) {
@@ -45,11 +63,15 @@ int unitTest1(int status) {
     //     }
     //     printf("\n");
     // }
-
     printf("stuck ? >%d", checkStuck(0, 1, 19, 19, testMap));
     printf("\n");
 
-    printf("find ? >%d", findPath(0, 1, 19, 19, testMap));
+    // printf("daozhe");
+    // dfsTest2(testMap, start, end);
+
+
+
+    // printf("find ? >%d", findPath(0, 1, 19, 19, testMap));
     printf("\n");
     freeMap(testMap);
     return passed;

@@ -444,83 +444,100 @@ int dfsTest(Map_t* map, int agentLoc_x, int agentLoc_y, int endPointLoc_x, int e
     return 0;
 }
 
-// Jin
-Stack *s;
 
-void initStack(Stack **s) {
-    *s = (Stack *)malloc(sizeof(Stack));
-    (*s)->top = -1;
+
+void initialize(Stack *stack) {
+    stack->top = -1;
 }
 
-void push(Stack *s, Point p) {
-    s->arr[++s->top] = p;
+int isEmpty(Stack *stack) {
+    return stack->top == -1;
 }
 
-Point pop(Stack *s) {
-    return s->arr[s->top--];
+void push(Stack *stack, Coordinates item) {
+    if (stack->top == MAP_SIZE * MAP_SIZE - 1) {
+        printf("Stack overflow\n");
+        return;
+    }
+    stack->data[++stack->top] = item;
 }
 
-int isEmpty(Stack *s) {
-    return s->top == -1;
+Coordinates pop(Stack *stack) {
+    if (isEmpty(stack)) {
+        printf("Stack underflow\n");
+        exit(1);
+    }
+    return stack->data[stack->top--];
 }
 
-// 用于记录路径的数组和索引
-Point road[MAP_SIZE * MAP_SIZE];
+// DFS algorithm to find the shortest path
+Coordinates dfsTest3(Map_t* map, Stack *stack, int dest_x, int dest_y) {
+    Coordinates next_step;
+    Coordinates current;
+    current = pop(stack);
 
-Point moves[] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // 上下左右移动
+    int nx, ny;
 
-int getManhattanDistance(Point a, Point b) {
-    return abs(a.x - b.x) + abs(a.y - b.y);
-}
+    // Possible moves (right, down, left, up)
+    int dx[] = {1, 0, -1, 0};
+    int dy[] = {0, 1, 0, -1};
 
-void addPathPoint(Point p) {
-    road[pathIndex++] = p; // 记录路径
-}
+    for (int i = 0; i < 4; ++i) {
+        nx = current.x + dx[i];
+        ny = current.y + dy[i];
 
-void dfsTest2(Map_t* map, Point start, Point end) {
+        // Check if the next move is within bounds and not an obstacle
+        if (nx >= 0 && nx < MAP_SIZE && ny >= 0 && ny < MAP_SIZE &&
+            tileStatus(map, nx, ny) != STATUS_OBSTACLE_BY_USER &&
+            tileStatus(map, nx, ny) != STATUS_OBSTACLE_BY_DEFAULT &&
+            tileStatus(map, nx, ny) != STATUS_AGENT_PAST) {
 
-    while (!isEmpty(s)) {
-        Point current = pop(s);
-        addPathPoint(current); // 添加当前点到路径
+            // Move to the next location
+            next_step.x = nx;
+            next_step.y = ny;
+            updateMap(map, nx, ny, STATUS_AGENT_PAST);
+            push(stack, current);
 
-        if (current.x == end.x && current.y == end.y) {
-            // 找到终点
-            printf("Path found!\n");
-            // 输出路径
-            for (int i = 0; i < pathIndex; ++i) {
-                printf("(%d, %d) ", road[i].x, road[i].y);
+            // Check if the destination is reached
+            if (nx == dest_x && ny == dest_y) {
+                return next_step;
             }
-            printf("\n");
-            return;
-        }
 
-        map->tileArray[current.x][current.y] = 4; // 标记为已访问
-
-        int minDistance = INF;
-        Point nextMove;
-        for (int i = 0; i < 4; ++i) {
-            Point next = {current.x + moves[i].x, current.y + moves[i].y};
-            if (isValid(map, next.x, next.y) && getManhattanDistance(next, end) < minDistance) {
-                nextMove = next;
-                minDistance = getManhattanDistance(next, end);
-            }
-        }
-
-        if (minDistance != INF) {
-            push(s, nextMove);
+            // Push the next step to the stack for further exploration
+            push(stack, next_step);
+            return next_step; // Return the next step to continue traversal in main
         }
     }
 
-    printf("Path not found.\n");
+    // If no valid move found, return current position
+    return current;
 }
 
-int main() {
-    Map_t testLevel = createLevel3();
-    Map_t* testMap = newMap(testLevel);
-    Point start = {0, 0}, end = {19, 19}; // 起点和终点
-    
-    initStack(&s);
-    push(s, start);
-    dfsTest2(testMap, start, end);
-    return 0;
-}
+// int main() {
+//     // Initialize a map
+//     Map_t testLevel = createLevel3();
+//     Map_t* map = newMap(testLevel);
+
+
+//     printf("Status of tile at position (4, 0): %d\n", tileStatus(map, 4, 0));
+
+//     // Set start and end points
+//     int start_x = 0;
+//     int start_y = 1;
+//     int dest_x = 19;
+//     int dest_y = 19;
+
+//     Stack stack;
+//     initialize(&stack);
+//     push(&stack, (Coordinates){start_x, start_y});
+
+//     Coordinates nextStep = {start_x, start_y};
+//     printf("Start: (%d, %d)\n", nextStep.x, nextStep.y);
+
+//     while (!(nextStep.x == dest_x && nextStep.y == dest_y)) {
+//         nextStep = DFS(map, &stack, dest_x, dest_y);
+//         printf("Next step: (%d, %d)\n", nextStep.x, nextStep.y);
+//     }
+
+//     return 0;
+// }
