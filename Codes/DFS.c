@@ -49,11 +49,11 @@ Coordinates pop(Stack *stack) {
 }
 
 // DFS algorithm to find the shortest path
-Coordinates DFS(Map_t* map, Stack *stack, int dest_x, int dest_y,  Coordinates *ns) {
+Coordinates DFS(Map_t* map, Stack *stack, int dest_x, int dest_y) {
     Coordinates next_step;
     Coordinates current;
     current = pop(stack);
-    *ns = current;
+
     int nx, ny;
 
     // Possible moves (down, right, up, left)
@@ -78,6 +78,7 @@ Coordinates DFS(Map_t* map, Stack *stack, int dest_x, int dest_y,  Coordinates *
 
             // Check if the destination is reached
             if (nx == dest_x && ny == dest_y) {
+                push(stack, next_step);
                 return next_step;
             }
 
@@ -120,21 +121,25 @@ int main() {
     push(&stack, (Coordinates){start_x, start_y});
 
     Coordinates nextStep = {start_x, start_y};
-    Coordinates ns;
     while (!(nextStep.x == dest_x && nextStep.y == dest_y)) {
         printf("\n");
-        nextStep = DFS(map, &stack, dest_x, dest_y,&ns);
-        printf("Next step: (%d, %d)\n", ns.x, ns.y);
+        nextStep = DFS(map, &stack, dest_x, dest_y);
         // Print the stack
-//        printf("Stack: ");
-//        for (int i = 0; i <= stack.top; ++i) {
-//            printf("(%d, %d) ", stack.data[i].x, stack.data[i].y);
-//        }
-//        printf("\n");
+        printf("Stack: ");
+        for (int i = 0; i <= stack.top; ++i) {
+            printf("(%d, %d) ", stack.data[i].x, stack.data[i].y);
+        }
+        Coordinates ns = stack.data[stack.top];
+        printf("Next step: (%d, %d)\n", ns.x, ns.y);
+        printf("\n");
     }
 
 
     return 0;
+
+
+}
+
 
 
 }
