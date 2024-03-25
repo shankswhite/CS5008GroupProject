@@ -4,12 +4,17 @@
 #include <string.h>
 
 void updateMap(Map_t* map, int loc_x, int loc_y, int newValue) {
-
+    if (map == NULL || loc_x < 0 || loc_x >= MAP_SIZE || loc_y < 0 || loc_y >= MAP_SIZE) {
+        return; // Check for invalid parameters
+    }
+    map->tileArray[loc_x][loc_y] = newValue;
 }
 
 int tileStatus(Map_t* map, int loc_x, int loc_y) {
-    return 0;
-
+    if (map == NULL || loc_x < 0 || loc_x >= MAP_SIZE || loc_y < 0 || loc_y >= MAP_SIZE) {
+        return -1; // Invalid tile position
+    }
+    return map->tileArray[loc_x][loc_y];
 }
 
 Map_t* newMap(Map_t level) {
