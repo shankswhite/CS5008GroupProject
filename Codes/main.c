@@ -23,6 +23,7 @@ int main(int argc, char** argv) {
     glutCreateWindow("Tile Conqueror");
 
     glutDisplayFunc(display);
+    glutMouseFunc(mouse);
 
     initWindow();
 

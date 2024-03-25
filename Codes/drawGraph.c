@@ -136,16 +136,59 @@ void renderButton(float x, float y, const char* string) {
     glColor3f(0.5, 0.8, 0.5);
     glBegin(GL_QUADS);
         glVertex2f(x, y);
-        glVertex2f(x+140, y);
-        glVertex2f(x+140, y+40);
-        glVertex2f(x, y+40);
+        glVertex2f(x+BUTTON_WIDTH, y);
+        glVertex2f(x+BUTTON_WIDTH, y+BUTTON_HEIGHT);
+        glVertex2f(x, y+BUTTON_HEIGHT);
     glEnd();
 
     glColor3f(0, 0, 0);
     renderString(x+20, y + 25, string);
 }
+
+
 void drawButton() {
-    renderButton(MAP_WIDTH + 30, 550, "Next Round");
-    renderButton(MAP_WIDTH + 30, 600, "Restart");
-    renderButton(MAP_WIDTH + 30, 650, "Agent: DFS");
+    renderButton(BUTTON_NEXT_ROUND_X, BUTTON_NEXT_ROUND_Y, "Next Round");
+    renderButton(BUTTON_RESTART_X, BUTTON_RESTART_Y, "Restart");
+    renderButton(BUTTON_AGENT_X, BUTTON_AGENT_Y, "Agent: DFS");
+}
+
+
+void drawMask() {
+    glColor3f(0.5, 0.8, 0.5);
+    glBegin(GL_QUADS);
+        glVertex2f(MAP_WIDTH+1, 651);
+        glVertex2f(WINDOW_WIDTH, 651);
+        glVertex2f(WINDOW_WIDTH, 800);
+        glVertex2f(MAP_WIDTH+1, 800);
+    glEnd();
+}
+
+
+void drawNotEnoughError() {
+    glColor3f(1, 0, 0);
+    glBegin(GL_QUADS);
+        glVertex2f(MAP_WIDTH+1, 651);
+        glVertex2f(WINDOW_WIDTH, 651);
+        glVertex2f(WINDOW_WIDTH, 700);
+        glVertex2f(MAP_WIDTH+1, 700);
+    glEnd();
+
+    glColor3f(1, 1, 1);
+    renderString(MAP_WIDTH+10, 675, "Not Enough Box!");
+}
+
+
+void drawWinMsg() {
+    glColor3f(0, 0.5, 0.5);
+    glBegin(GL_QUADS);
+        glVertex2f(MAP_WIDTH+1, 710);
+        glVertex2f(WINDOW_WIDTH, 710);
+        glVertex2f(WINDOW_WIDTH, 800);
+        glVertex2f(MAP_WIDTH+1, 800);
+    glEnd();
+
+    glColor3f(1, 0, 0);
+    renderString(MAP_WIDTH+10, 735, "Game Over");
+    renderString(MAP_WIDTH+10, 750, "Final Score:");
+    renderString(MAP_WIDTH+80, 765, "0");
 }

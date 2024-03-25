@@ -16,13 +16,14 @@
 #define MAP_HEIGHT 800
 
 extern Map_t* mainMap;
+extern int isNotEnoughError;
+extern int isStuckError;
 
 
-
-void displayMap();
 Map_t* getMap();
 void display();
 void initWindow();
+void mouse(int button, int state, int x, int y);
 
 
 #endif
