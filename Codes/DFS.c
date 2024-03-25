@@ -88,9 +88,8 @@ Coordinates DFS(Map_t* map, Stack *stack, int dest_x, int dest_y) {
             return next_step; // Return the next step to continue traversal in main
         }
     }
-
+    
     // If no valid move found, return current position
-
     return current;
 }
 
@@ -133,14 +132,8 @@ int main() {
         printf("Next step: (%d, %d)\n", ns.x, ns.y);
         printf("\n");
     }
-
-
     return 0;
-
-
 }
 
 
-
-}
 
