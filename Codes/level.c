@@ -76,3 +76,24 @@ Map_t createLevel3() {
 
     return level3;
 }
+
+
+Map_t createLevel4() {
+    Map_t level4;
+
+    for (int i = 0; i < MAP_SIZE; i++) {
+        for (int j = 0; j < MAP_SIZE; j++) {
+            level4.tileArray[i][j] = 0;
+        }
+    }
+
+    level4.tileArray[19][19] = STATUS_END;
+
+
+    for (int i = 1; i < MAP_SIZE; i ++) {
+        level4.tileArray[10][i] = STATUS_OBSTACLE_BY_USER;
+    }
+
+
+    return level4;
+}
