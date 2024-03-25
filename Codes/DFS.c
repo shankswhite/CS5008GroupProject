@@ -22,6 +22,8 @@ typedef struct {
     int top;
 } Stack;
 
+
+
 void initialize(Stack *stack) {
     stack->top = -1;
 }
@@ -47,16 +49,16 @@ Coordinates pop(Stack *stack) {
 }
 
 // DFS algorithm to find the shortest path
-Coordinates DFS(Map_t* map, Stack *stack, int dest_x, int dest_y) {
+Coordinates DFS(Map_t* map, Stack *stack, int dest_x, int dest_y,  Coordinates *ns) {
     Coordinates next_step;
     Coordinates current;
     current = pop(stack);
-
+    *ns = current;
     int nx, ny;
 
-    // Possible moves (right, down, left, up)
-    int dx[] = {1, 0, -1, 0};
-    int dy[] = {0, 1, 0, -1};
+    // Possible moves (down, right, up, left)
+    int dx[] = {0, 1, 0, -1};
+    int dy[] = {1, 0, -1, 0};
 
     for (int i = 0; i < 4; ++i) {
         nx = current.x + dx[i];
@@ -81,11 +83,13 @@ Coordinates DFS(Map_t* map, Stack *stack, int dest_x, int dest_y) {
 
             // Push the next step to the stack for further exploration
             push(stack, next_step);
+
             return next_step; // Return the next step to continue traversal in main
         }
     }
 
     // If no valid move found, return current position
+
     return current;
 }
 
@@ -97,8 +101,13 @@ int main() {
     updateMap(map, 2, 6, STATUS_OBSTACLE_BY_USER);
     updateMap(map, 5, 0, STATUS_OBSTACLE_BY_USER);
     updateMap(map, 4, 1, STATUS_OBSTACLE_BY_USER);
+    updateMap(map, 3, 10, STATUS_OBSTACLE_BY_USER);
+    updateMap(map, 4, 6, STATUS_OBSTACLE_BY_USER);
+    updateMap(map, 4, 7, STATUS_OBSTACLE_BY_USER);
+    updateMap(map, 4, 8, STATUS_OBSTACLE_BY_USER);
+    updateMap(map, 2, 8, STATUS_OBSTACLE_BY_USER);
+    updateMap(map, 3, 9, STATUS_OBSTACLE_BY_USER);
 
-    printf("Status of tile at position (4, 0): %d\n", tileStatus(map, 4, 0));
 
     // Set start and end points
     int start_x = 0;
@@ -111,13 +120,22 @@ int main() {
     push(&stack, (Coordinates){start_x, start_y});
 
     Coordinates nextStep = {start_x, start_y};
-    printf("Start: (%d, %d)\n", nextStep.x, nextStep.y);
-
+    Coordinates ns;
     while (!(nextStep.x == dest_x && nextStep.y == dest_y)) {
-        nextStep = DFS(map, &stack, dest_x, dest_y);
-        printf("Next step: (%d, %d)\n", nextStep.x, nextStep.y);
+        printf("\n");
+        nextStep = DFS(map, &stack, dest_x, dest_y,&ns);
+        printf("Next step: (%d, %d)\n", ns.x, ns.y);
+        // Print the stack
+//        printf("Stack: ");
+//        for (int i = 0; i <= stack.top; ++i) {
+//            printf("(%d, %d) ", stack.data[i].x, stack.data[i].y);
+//        }
+//        printf("\n");
     }
 
+
     return 0;
+
+
 }
 
