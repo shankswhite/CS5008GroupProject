@@ -1,12 +1,13 @@
 #include "map.h"
 #include "level.h"
 
-int g_agent_locx = 10;
-int g_agent_locy = 10;
-int g_agent_prev_locx = 9;
-int g_agent_prev_locy = 9;
-int g_endPoint_locx = 10;
-int g_endPoint_locy = 10;
+int g_agent_locx = START_X;
+int g_agent_locy = START_Y;
+int g_agent_prev_locx;
+int g_agent_prev_locy;
+int g_endPoint_locx = END_X;
+int g_endPoint_locy = END_Y;
+Coordinates START_COORDINATE = {START_X, START_Y};
 
 Map_t createLevel1() {
     Map_t level1;
@@ -73,6 +74,8 @@ Map_t createLevel3() {
         level3.tileArray[i][10] = STATUS_OBSTACLE_BY_USER;
     }
     level3.tileArray[14][10] = STATUS_OBSTACLE_BY_USER;
+    level3.tileArray[0][1] = STATUS_AGENT_CURR;
+    level3.tileArray[19][19] = STATUS_END;
 
     return level3;
 }
@@ -96,4 +99,28 @@ Map_t createLevel4() {
 
 
     return level4;
+}
+
+
+Map_t createLevel5() {
+    Map_t level5;
+
+    for (int i = 0; i < MAP_SIZE; i++) {
+        for (int j = 0; j < MAP_SIZE; j++) {
+            level5.tileArray[i][j] = 0;
+        }
+    }
+
+    level5.tileArray[19][19] = STATUS_END;
+
+    level5.tileArray[1][1] = STATUS_START;
+
+    level5.tileArray[6][1] = STATUS_OBSTACLE_BY_USER;
+    level5.tileArray[6][2] = STATUS_OBSTACLE_BY_USER;
+    level5.tileArray[5][2] = STATUS_OBSTACLE_BY_USER;
+    level5.tileArray[4][2] = STATUS_OBSTACLE_BY_USER;
+    level5.tileArray[5][0] = STATUS_OBSTACLE_BY_USER;
+    level5.tileArray[3][0] = STATUS_OBSTACLE_BY_USER;
+
+    return level5;
 }

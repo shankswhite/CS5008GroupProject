@@ -28,8 +28,9 @@
 int unitTest1(int status) {
     // initial map
     int passed = 0;
-    Map_t testLevel = createLevel3();
+    Map_t testLevel = createLevel5();
     Map_t* testMap = newMap(testLevel);
+    Map_t* testMap2 = newMap(testLevel);
 
     printMap(testMap);
     printf("\n");
@@ -38,41 +39,45 @@ int unitTest1(int status) {
     int start_y = 1;
     int dest_x = 19;
     int dest_y = 19;
+    printf("stuck ? >%d", checkStuck(0, 1, 19, 19, testMap));
+    printf("\n");
+    printf("find ? >%d", findPath(0, 1, 19, 19, testMap));
+    printf("\n");
+    // Stack stack;
+    // initialize(&stack);
+    // push(&stack, (Coordinates){start_x, start_y});
 
-    Stack stack;
-    initialize(&stack);
-    push(&stack, (Coordinates){start_x, start_y});
+    // Coordinates nextStep = {-1, -1};
+    // printf("Start: (%d, %d)\n", nextStep.x, nextStep.y);
 
-    Coordinates nextStep = {start_x, start_y};
-    printf("Start: (%d, %d)\n", nextStep.x, nextStep.y);
-
-    while (!(nextStep.x == dest_x && nextStep.y == dest_y)) {
-        nextStep = dfsTest3(testMap, &stack, dest_x, dest_y);
-        printf("Next step: (%d, %d)\n", nextStep.x, nextStep.y);
-    }
-    // for (int j = 0; j < MAP_SIZE; j++) {
-    //     printf("(%d, %d)", path[j][0], path[j][1]);
+    // while (!(nextStep.x == dest_x && nextStep.y == dest_y)) {
+    //     nextStep = dfsTest3(testMap2, &stack, dest_x, dest_y);
+    //     // printf("Next step: (%d, %d)\n", nextStep.x, nextStep.y);
     // }
-    // printf("\n");
+
+    printf("%d", pathIndex);
+    for (int i = 0; i < pathIndex; i++) {
+        printf("(%d, %d) \n", pathSteps[i].x, pathSteps[i].y);
+    }
     
-    // printf("%d \n", findPath(9, 19, 19, 19, testMap, ));
+
+    printf("Next step: (%d, %d)\n", getNextStep((Coordinates){1, 1}).x, getNextStep((Coordinates){1, 1}).y);
+    printf("Next step: (%d, %d)\n", getNextStep((Coordinates){1, 1}).x, getNextStep((Coordinates){1, 1}).y);
+
+    // printf("Path: \n");
+
     // for (int i = 0; i < MAP_SIZE; i++) {
     //     printf("%2d ", i);
     //     for (int j = 0; j < MAP_SIZE; j++) {
-    //         printf("%d", curVisited[i][j]);
+    //         printf("%d", globalVisited[i][j]);
     //     }
     //     printf("\n");
     // }
-    printf("stuck ? >%d", checkStuck(0, 1, 19, 19, testMap));
-    printf("\n");
 
-    // printf("daozhe");
-    // dfsTest2(testMap, start, end);
+    printf("\n Final map: \n");
+    printMap(testMap);
 
 
-
-    // printf("find ? >%d", findPath(0, 1, 19, 19, testMap));
-    printf("\n");
     freeMap(testMap);
     return passed;
 }

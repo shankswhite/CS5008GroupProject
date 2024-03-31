@@ -6,6 +6,7 @@
 #include "map.h"
 #include "level.h"
 #include "gameManager.h"
+#include "gameLogic.h"
 
 #include <stdio.h>
 #include <GLUT/glut.h>
@@ -13,7 +14,15 @@
 
 
 int main(int argc, char** argv) {
+    // initialize the map
     mainMap = getMap();
+    dfsMap = getMap();
+    stuckMap = getMap();
+
+    // initialize data for dfs and start point
+    initGame();
+
+    
     
 
     glutInit(&argc, argv);

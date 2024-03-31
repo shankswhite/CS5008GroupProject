@@ -1,3 +1,8 @@
+#ifndef AGENT_H
+#define AGENT_H
+
+#include "map.h"
+
 #define NO_FOUND 0
 #define UP 1
 #define DOWN 2
@@ -22,7 +27,11 @@ typedef struct {
 extern int path[MAP_SIZE * MAP_SIZE][2];
 extern int pathIndex;
 extern int pathLength;
+extern int visitCounts[20][20];
+
 extern int curVisited[MAP_SIZE][MAP_SIZE];
+int globalVisited[MAP_SIZE][MAP_SIZE];
+extern Coordinates pathSteps[MAP_SIZE * MAP_SIZE];
 extern Stack *s;
 
 typedef int (*PathFindingAlgorithmPointer)(Map_t* map, int agentLoc_x, int agentLoc_y, int endPointLoc_x, int endPointLoc_y);
@@ -37,5 +46,8 @@ void push(Stack *stack, Coordinates item);
 // void dfsTest2(Map_t* map, Point start, Point end);
 Coordinates dfsTest3(Map_t* map, Stack *stack, int dest_x, int dest_y);
 void initialize(Stack *stack);
+Coordinates getNextStep(Coordinates current);
 
 // void updateMapAgent(Map_t* map, int agentLoc_x, int agentLoc_y);
+
+#endif

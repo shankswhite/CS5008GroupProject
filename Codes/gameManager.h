@@ -16,6 +16,8 @@
 #define MAP_HEIGHT 800
 
 extern Map_t* mainMap;
+extern Map_t* dfsMap;
+extern Map_t* stuckMap;
 extern int isNotEnoughError;
 extern int isStuckError;
 

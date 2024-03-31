@@ -25,5 +25,7 @@ void drawScore();
 void drawMask();
 void drawNotEnoughError();
 void drawWinMsg();
+void drawStuckError();
+void drawMaxScore();
 
 #endif

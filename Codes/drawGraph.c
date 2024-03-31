@@ -1,7 +1,10 @@
 #include "drawGraph.h"
 #include "gameManager.h"
+#include "gameLogic.h"
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <GLUT/glut.h>
 #include <OpenGL/gl.h>
 
@@ -124,11 +127,16 @@ void drawDescription() {
 void drawScore() {
     renderString(810, 400, "Score: ");
     //TODO: Modify score
-    renderString(900, 400, "0");
+    char bufferScore[50];
+    sprintf(bufferScore, "%d", g_score);
+    renderString(900, 400, bufferScore);
 
+
+    char bufferRss[50];
+    sprintf(bufferRss, "%d", g_rss);
     renderString(810, 430, "RSS: ");
     //TODO: Modify box number
-    renderString(870, 430, "0");
+    renderString(870, 430, bufferRss);
 }
 
 
@@ -188,7 +196,29 @@ void drawWinMsg() {
     glEnd();
 
     glColor3f(1, 0, 0);
-    renderString(MAP_WIDTH+10, 735, "Game Over");
-    renderString(MAP_WIDTH+10, 750, "Final Score:");
-    renderString(MAP_WIDTH+80, 765, "0");
+    renderString(MAP_WIDTH+10, 735, "Game Over!");
+
+}
+
+void drawMaxScore() {
+    glColor3f(1, 0, 0);
+
+    renderString(MAP_WIDTH+10, 750, "Max Score:");
+
+    char bufferMaxScore[50];
+    sprintf(bufferMaxScore, "%d", g_maxScore);
+    renderString(MAP_WIDTH+80, 765, bufferMaxScore);
+}
+
+void drawStuckError() {
+    glColor3f(1, 0, 0);
+    glBegin(GL_QUADS);
+        glVertex2f(MAP_WIDTH+1, 651);
+        glVertex2f(WINDOW_WIDTH, 651);
+        glVertex2f(WINDOW_WIDTH, 700);
+        glVertex2f(MAP_WIDTH+1, 700);
+    glEnd();
+
+    glColor3f(1, 1, 1);
+    renderString(MAP_WIDTH+10, 675, "Agent Can't be Stuck!");
 }
