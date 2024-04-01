@@ -42,5 +42,17 @@ int main(int argc, char** argv) {
         mainMap = NULL;
     }
 
+    if (dfsMap) {
+        freeMap(dfsMap);
+        dfsMap = NULL;
+    }
+
+    if (stuckMap) {
+        freeMap(stuckMap);
+        stuckMap = NULL;
+    }
+
+    
+
     return 0;
 }
