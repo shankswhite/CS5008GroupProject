@@ -23,7 +23,7 @@ void checkGameOver() {
 
 int floodFill(int x, int y, int endPointLoc_x, int endPointLoc_y, Map_t* map, int visited[MAP_SIZE][MAP_SIZE]) {
     if (x < 0 || x >= MAP_SIZE || y < 0 || y >= MAP_SIZE) {
-        printf("Out of bounds\n");
+        // printf("Out of bounds\n");
         return 0;
     }
 
@@ -47,7 +47,10 @@ int floodFill(int x, int y, int endPointLoc_x, int endPointLoc_y, Map_t* map, in
 
 
 int floodFillUtil(int x, int y, int endPointLoc_x, int endPointLoc_y, Map_t* map, int visited[MAP_SIZE][MAP_SIZE]) {
-    if (x < 0 || x >= MAP_SIZE || y < 0 || y >= MAP_SIZE) return 0;
+    if (x < 0 || x >= MAP_SIZE || y < 0 || y >= MAP_SIZE) {
+        printf("Out of bounds\n");
+        return 0;
+    }
     if (visited[x][y] || map->tileArray[x][y] >= STATUS_OBSTACLE_BY_USER) return 0;
 
     visited[x][y] = 1;
@@ -65,9 +68,19 @@ int floodFillUtil(int x, int y, int endPointLoc_x, int endPointLoc_y, Map_t* map
 
 int checkStuck(int startX, int startY, int endPointLoc_x, int endPointLoc_y, Map_t* map) {
     int visited[MAP_SIZE][MAP_SIZE] = {0};
+
     return !floodFillUtil(startX, startY, endPointLoc_x, endPointLoc_y, map, visited);
 }
 
+int checkPastPath(int startX, int startY, int endPointLoc_x, int endPointLoc_y, Map_t* map) {
+    // printf("checkPastPath\n");
+    printf("Start: (%d, %d)\n", map->tileArray[startX][startY], STATUS_AGENT_PAST);
+    if (map->tileArray[startX][startY] == STATUS_AGENT_PAST) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
 
 void updateScore() {
     if (g_isGameEnd == 0) {
@@ -125,6 +138,7 @@ void runDfs() {
 void restartGame() {
     mainMap = getMap();
     dfsMap = getMap();
+    stuckMap = getMap();
     g_round = INITIAL_ROUND;
     g_score = INITIAL_SCORE;
     g_rss = INITIAL_RSS;
