@@ -121,6 +121,7 @@ void mouse(int button, int state, int x, int y) {
                 int tempStatus = stuckMap->tileArray[mapX][mapY];
                 updateMap(stuckMap, mapX, mapY, STATUS_OBSTACLE_BY_USER);
                 if (checkStuck(g_agent_locx, g_agent_locy, g_endPoint_locx, g_endPoint_locy, stuckMap) != 1) {
+                // if (findPath(g_agent_locx, g_agent_locy, g_endPoint_locx, g_endPoint_locy, stuckMap) != 0) {
                     updateMap(mainMap, mapX, mapY, STATUS_OBSTACLE_BY_USER);
                     updateMap(dfsMap, mapX, mapY, STATUS_OBSTACLE_BY_USER);
                     g_rss--;
@@ -128,7 +129,6 @@ void mouse(int button, int state, int x, int y) {
                     isStuckError = 1;
                     stuckMap->tileArray[mapX][mapY] = tempStatus;
                 }
-                
             } else {
                 isNotEnoughError = 1;
             }

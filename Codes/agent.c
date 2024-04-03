@@ -209,9 +209,6 @@ Coordinates dfsTest3(Map_t* map, Stack *stack, int dest_x, int dest_y) {
     //     }
     //     printf("\n");
     // }
-
-
-
     int nx, ny;
 
     // Possible moves (right, down, left, up)
