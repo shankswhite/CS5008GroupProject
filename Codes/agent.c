@@ -158,17 +158,16 @@ int findPath(int x, int y, int endX, int endY, Map_t* map) {
 void shuffleDirections(int distances[], int indexes[], int size) {
     for (int i = 0; i < size; ++i) {
         int j = rand() % (i + 1);
-        // 交换distances
+
         int temp = distances[i];
         distances[i] = distances[j];
         distances[j] = temp;
-        // 交换indexes
+
         temp = indexes[i];
         indexes[i] = indexes[j];
         indexes[j] = temp;
     }
 }
-
 
 
 void initialize(Stack *stack) {

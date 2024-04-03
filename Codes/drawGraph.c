@@ -222,3 +222,17 @@ void drawStuckError() {
     glColor3f(1, 1, 1);
     renderString(MAP_WIDTH+10, 675, "Agent Can't be Stuck!");
 }
+
+void drawPastPathError() {
+    glColor3f(1, 0, 0);
+    glBegin(GL_QUADS);
+        glVertex2f(MAP_WIDTH+1, 651);
+        glVertex2f(WINDOW_WIDTH, 651);
+        glVertex2f(WINDOW_WIDTH, 720);
+        glVertex2f(MAP_WIDTH+1, 720);
+    glEnd();
+
+    glColor3f(1, 1, 1);
+    renderString(MAP_WIDTH+10, 675, "Obstacles Can't be");
+    renderString(MAP_WIDTH+10, 700, "on Past Path!");
+}

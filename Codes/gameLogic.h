@@ -24,4 +24,5 @@ void initGame();
 void updateMapAgent(Map_t* map, int loc_x, int loc_y);
 void restartGame();
 void runDfs();
+int checkPastPath(int startX, int startY, int endPointLoc_x, int endPointLoc_y, Map_t* map);
 #endif
