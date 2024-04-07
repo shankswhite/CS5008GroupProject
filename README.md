@@ -6,6 +6,8 @@ Downloads:
 [![Download Mac](https://img.shields.io/badge/Download-Mac-brightgreen?logo=github)](https://drive.google.com/file/d/1CAgzVN_g604vQ3UzxbGj8jsxvvyH5_gH/view?usp=sharing)
 [![Download Win](https://img.shields.io/badge/Download-Win-brightgreen?logo=github)](https://drive.google.com/file/d/1fhNDK4NzXhiqlUtXZmUx0EglaZSyPZ3T/view?usp=sharing)
 
+Download FAQ: the first time you run it on mac, you need to right-click on the file and select open to open it. Or you can compile it yourself by "make" in ./Codes
+
 
 Developers:
 Junhui Su, Xiaofeng Zhao, Zhechao Jin
