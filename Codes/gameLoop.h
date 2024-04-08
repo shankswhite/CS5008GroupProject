@@ -6,7 +6,7 @@
 
 void restart();
 
-void putBox();
+void putObstacle();
 
 void updateScore();
 

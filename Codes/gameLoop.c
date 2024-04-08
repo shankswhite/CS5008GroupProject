@@ -8,7 +8,7 @@
 #include <string.h>
 
 int Score = 0;
-int Box = 10;
+int Obstacle = 10;
 
 
 void restart(){
@@ -20,26 +20,57 @@ void restart(){
     // reset score
     Score = 0;
 
-    // reset box
-    Box = 10;
+    // reset Obstacle
+    Obstacle = 10;
 }
 
-void putBox(int x, int y){
-    if(Box <= 0){
-        return;
-    }
+void updateMatrix(int x, int y, int status){
     if(x < 0 || x >= MAP_SIZE || y < 0 || y >= MAP_SIZE){
-        return;
+        printf("Update failure");
+        exit(1);
     }
-    // if(mainMap->tileArray[x][y])
-    mainMap->tileArray[x][y] = 5;
-    Box--;
+    mainMap->tileArray[x][y] = status;
     return;
 }
 
-void updateMatrix(){}
+void updateScore(int change){
+    Score += change;
+    return;
+}
 
-void updateScore(){}
+void putObstacle(int x, int y){
+    if(Obstacle <= 0){
+        printf("no more obstacles");
+        return;
+    }
+    //while(x < 0 || x >= MAP_SIZE || y < 0 || y >= MAP_SIZE){}
+    if(x < 0 || x >= MAP_SIZE || y < 0 || y >= MAP_SIZE){
+        printf("out of bound");
+        return;
+    }
+    if(mainMap->tileArray[x][y] != STATUS_NULL){
+        printf("invalid position");
+        return;
+    }
+    updateMatrix(x, y, STATUS_OBSTACLE_BY_USER);
+    Obstacle--;
+    return;
+}
+
+void agentMove(int start_x, int start_y, int end_x, int end_y){
+    if(end_x < 0 || end_x >= MAP_SIZE || end_y < 0 || end_y >= MAP_SIZE){
+        printf("out of bound");
+        return;
+    }
+    if(mainMap->tileArray[end_x][end_y] != STATUS_NULL){
+        printf("invalid position");
+        return;
+    }
+    updateMatrix(start_x, start_y, STATUS_AGENT_PAST);
+    updateMatrix(end_x, end_y, STATUS_AGENT_CURR);
+    updateScore(1);
+    return;
+}
 
 void nextRound(){}
 
