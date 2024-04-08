@@ -3,13 +3,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-void updateMap(Map_t* map, int loc_x, int loc_y, int newValue) {
-
+void updateMap(Map_t* map, int loc_x, int loc_y, int newState) {
+    map->tileArray[loc_x][loc_y] = newState;
 }
 
 int tileStatus(Map_t* map, int loc_x, int loc_y) {
-    return 0;
-
+    return map->tileArray[loc_x][loc_y];
 }
 
 Map_t* newMap(Map_t level) {
@@ -33,6 +32,7 @@ void freeMap(Map_t* map) {
 
 void printMap(Map_t* map) {
     for (int i = 0; i < MAP_SIZE; i++) {
+        printf("%2d ", i);
         for (int j = 0; j < MAP_SIZE; j++) {
             printf("%d", map->tileArray[i][j]);
         }

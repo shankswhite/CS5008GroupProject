@@ -24,7 +24,7 @@ typedef struct Map {
 // 6 Obstacles Put by Default
 
 
-void updateMap(Map_t* map, int loc_x, int loc_y, int newValue);
+void updateMap(Map_t* map, int loc_x, int loc_y, int newState);
 int tileStatus(Map_t* map, int loc_x, int loc_y); // Check the sepcific tile's status/number to judge if it could be put obstacle or else
 Map_t* newMap(Map_t);
 void printMap(Map_t* map);

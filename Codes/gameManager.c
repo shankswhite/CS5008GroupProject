@@ -1,96 +1,160 @@
 #include "map.h"
 #include "level.h"
 #include "gameManager.h"
-#include "drawGrid.h"
+#include "drawGraph.h"
+#include "gameLogic.h"
+#include "agent.h"
+// #include "main.c"
 
 #include <stdio.h>
 #include <GLUT/glut.h>
 #include <OpenGL/gl.h>
 
 
-void initOpenGL() {
-    glClearColor(1.0, 0.0, 1.0, 1.0);
+int isNotEnoughError = 0;
+int isStuckError = 0;
+int isPastPathError = 0;
+Map_t* mainMap = NULL;
+Map_t* dfsMap = NULL;
+Map_t* stuckMap = NULL;
+
+
+void initWindow() {
+    glClearColor(1.0, 1.0, 1.0, 1.0);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluOrtho2D(0.0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0);
     glMatrixMode(GL_MODELVIEW);
 }
 
+
 Map_t* getMap() {
-    Map_t mainLevel = createLevel1();
+    Map_t mainLevel = createLevel5();
     Map_t* mainMap = newMap(mainLevel);
     return mainMap;
 }
 
-Map_t* mainMap = NULL;
 
+void display() {
 
-// 绘制函数
-void displayMap() {
+    glClear(GL_COLOR_BUFFER_BIT);
+    glLoadIdentity();
 
-    glClear(GL_COLOR_BUFFER_BIT); // 清除颜色缓冲区
-    glLoadIdentity(); // 重置当前指定的矩阵为单位矩阵
-    // drawGrid();
+    drawMap();
 
-    // 假设每个tile的大小
-    float tileSize = MAP_WIDTH / 20.0;
+    drawGrid();
 
-    // 遍历你的地图数据并绘制每个tile
-    for (int i = 0; i < 20; i++) {
-        for (int j = 0; j < 20; j++) {
-            if (mainMap->tileArray[i][j] == 0) {
-                glColor3f(1.0, 1.0, 1.0); // 设置颜色为白色
-            } else {
-                
-                glColor3f(0.0, 0.0, 0.0); // 设置颜色为黑色
-            }
-            // 绘制正方形tile
-            glBegin(GL_QUADS);
-                glVertex2f(i * tileSize, j * tileSize);
-                glVertex2f((i + 1) * tileSize, j * tileSize);
-                glVertex2f((i + 1) * tileSize, (j + 1) * tileSize);
-                glVertex2f(i * tileSize, (j + 1) * tileSize);
-            glEnd();
+    drawDescription();
+
+    drawScore();
+
+    drawButton();
+
+    
+
+    if (isNotEnoughError == 1) {
+        drawNotEnoughError();
+    }
+
+    if (g_isGameEnd == 1) {
+        if (g_score > g_maxScore) {
+            g_maxScore = g_score;
+        }
+        drawWinMsg();
+    }
+
+    if (isStuckError == 1) {
+        if (g_rss > 0) {
+            drawStuckError();
         }
     }
 
-    glBegin(GL_QUADS);
-        glVertex2f(800, 900);
-        glVertex2f(900, 900);
-        glVertex2f(900, 700);
-        glVertex2f(800, 700);
-    glEnd();
-
-
-    glFlush(); // 确保之前的所有OpenGL命令已经执行完毕
-}
-
-
-
-int display(int argc, char** argv) {
-    mainMap = getMap();
-    
-
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
-    glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-    glutInitWindowPosition(100, 100);
-    glutCreateWindow("Map");
-
-    // 设置绘制回调函数
-    glutDisplayFunc(displayMap);
-
-    initOpenGL();
-
-    // 进入GLUT事件处理循环
-    glutMainLoop();
-    if (mainMap) {
-        freeMap(mainMap);
-        mainMap = NULL;
+    if (isPastPathError == 1) {
+        drawPastPathError();
     }
 
-    return 0;
+    drawMaxScore();
+
+    glutSwapBuffers();
 }
 
 
+void mouse(int button, int state, int x, int y) {
 
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+
+        if (x >= BUTTON_NEXT_ROUND_X && x <= (BUTTON_NEXT_ROUND_X + BUTTON_WIDTH) && 
+            y >= BUTTON_NEXT_ROUND_Y && y <= (BUTTON_NEXT_ROUND_Y + BUTTON_HEIGHT) && 
+            g_isGameEnd == 0) {
+            // TODO: Next round logic
+            g_round++;
+            updateMapPastPath(mainMap, g_agent_locx, g_agent_locy);
+            
+            runDfs();
+
+            pathSteps[pathIndex] = (Coordinates){g_endPoint_locx, g_endPoint_locy};
+            pathIndex++;
+
+            for (int i = 0; i < pathIndex; i++) {
+                printf("(%d, %d) \n", pathSteps[i].x, pathSteps[i].y);
+            }
+
+            printf("Next: (%d, %d)\n", pathSteps[g_round].x, pathSteps[g_round].y);
+            g_agent_locx = pathSteps[g_round].x;
+            g_agent_locy = pathSteps[g_round].y;
+            
+            updateMapAgent(mainMap, g_agent_locx, g_agent_locy);
+            
+            updateScore();            
+        }
+
+        int mapX = x / tileSize;
+        int mapY = y / tileSize;
+
+        if (isNotEnoughError == 1) {
+            isNotEnoughError = 0;
+        }
+
+        if (isStuckError == 1) {
+            isStuckError = 0;
+        }
+
+        if (isPastPathError == 1) {
+            isPastPathError = 0;
+        }
+
+        if (mapX >= 0 && mapX < MAP_SIZE && mapY >= 0 && mapY < MAP_SIZE &&
+            mainMap->tileArray[mapX][mapY] < STATUS_OBSTACLE_BY_USER &&
+            mainMap->tileArray[mapX][mapY] != STATUS_AGENT_CURR) {
+            // Update Map when the player put obstacles
+            if (g_rss > 0) {
+                int tempStatus = stuckMap->tileArray[mapX][mapY];
+                updateMap(stuckMap, mapX, mapY, STATUS_OBSTACLE_BY_USER);
+                // printf("%d \n", checkPastPath(mapX, mapY, g_endPoint_locx, g_endPoint_locy, mainMap));
+                if (checkPastPath(mapX, mapY, g_endPoint_locx, g_endPoint_locy, mainMap) == 1) {
+                    isPastPathError = 1;
+                    // printf("Error: Past Path\n");
+                    stuckMap->tileArray[mapX][mapY] = tempStatus;
+                } else if (checkStuck(g_agent_locx, g_agent_locy, g_endPoint_locx, g_endPoint_locy, stuckMap) != 1) {
+                    updateMap(mainMap, mapX, mapY, STATUS_OBSTACLE_BY_USER);
+                    updateMap(dfsMap, mapX, mapY, STATUS_OBSTACLE_BY_USER);
+                    g_rss--;
+                } else {
+                    isStuckError = 1;
+                    stuckMap->tileArray[mapX][mapY] = tempStatus;
+                }
+            } else {
+                isNotEnoughError = 1;
+            }
+        }
+
+        if (x >= BUTTON_RESTART_X && x <= (BUTTON_RESTART_X + BUTTON_WIDTH) && 
+            y >= BUTTON_RESTART_Y && y <= (BUTTON_RESTART_Y + BUTTON_HEIGHT)) {
+            // TODO: Next round logic
+            restartGame();
+        }
+
+        checkGameOver();
+        glutPostRedisplay();
+    }
+}
