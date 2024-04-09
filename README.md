@@ -6,7 +6,9 @@ Downloads:
 [![Download Mac](https://img.shields.io/badge/Download-Mac-brightgreen?logo=github)](https://drive.google.com/file/d/1CAgzVN_g604vQ3UzxbGj8jsxvvyH5_gH/view?usp=sharing)
 [![Download Win](https://img.shields.io/badge/Download-Win-brightgreen?logo=github)](https://drive.google.com/drive/folders/1D8zUZ1wIoVny_iM_nRBHavIzM3Y9s48j?usp=sharing)
 
-Download FAQ: the first time you run it on mac, you need to right-click on the file and select open to open it. Or you can compile it yourself by "make" in ./Codes
+Download FAQ: 
+1. The first time you run it on mac, you need to right-click on the file and select open to open it. Or you can compile it yourself by "make" in ./Codes
+2. On windows, you can download CS5008.exe & freeglut.dll from the ./windows directory if it prompts malicious error. 
 
 
 Developers:
