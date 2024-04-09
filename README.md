@@ -11,6 +11,9 @@ Download FAQ:
 2. The first time you run it on mac, you need to right-click on the file and select open to open it.
 3. On windows, you can download CS5008.exe & freeglut.dll from the ./windows directory if the link above pops up the malicious error (no virus for sure, just because of .exe source file).
 
+Compiling Process:
+Go to the ./Codes directory in terminal, then run "make", then "./mainProgram", there you go!
+
 
 Developers:
 Junhui Su, Xiaofeng Zhao, Zhechao Jin
