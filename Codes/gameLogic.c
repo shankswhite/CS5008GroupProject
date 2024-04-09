@@ -21,6 +21,9 @@ void checkGameOver() {
 }
 
 
+// check if current point can reach the end
+// x, y: current coordinate
+// visited: dfs visit storage
 int floodFill(int x, int y, int endPointLoc_x, int endPointLoc_y, Map_t* map, int visited[MAP_SIZE][MAP_SIZE]) {
     if (x < 0 || x >= MAP_SIZE || y < 0 || y >= MAP_SIZE) {
         // printf("Out of bounds\n");
